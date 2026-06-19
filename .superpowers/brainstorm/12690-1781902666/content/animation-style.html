@@ -1,0 +1,52 @@
+<h2>Which animation style feels right?</h2>
+<p class="subtitle">Three directions for motion + interaction polish across the whole page. Pick the one that matches the vibe you want.</p>
+
+<div class="cards">
+  <div class="card" data-choice="subtle" onclick="toggleSelect(this)">
+    <div class="card-body">
+      <h3>A · Subtle &amp; Elegant</h3>
+      <p><strong>Motion is felt, not seen.</strong></p>
+      <ul style="margin: 8px 0 0; padding-left: 20px; line-height: 1.7;">
+        <li>Sections fade in softly as you scroll</li>
+        <li>Cards lift <code>2px</code> on hover with a slight shadow</li>
+        <li>Buttons: gentle background + border color shift (already in)</li>
+        <li>Form fields: smooth focus ring expansion</li>
+        <li>Timing: 200–300ms, ease-out curves</li>
+        <li><em>Reduced motion:</em> all motion disabled</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card" data-choice="expressive" onclick="toggleSelect(this)">
+    <div class="card-body">
+      <h3>B · Expressive &amp; Polished</h3>
+      <p><strong>Motion rewards attention.</strong></p>
+      <ul style="margin: 8px 0 0; padding-left: 20px; line-height: 1.7;">
+        <li>Cards stagger-reveal on scroll (60ms delay between each)</li>
+        <li>Card hover: scale 1.02 + cyan glow + elevated shadow</li>
+        <li>Buttons: subtle press feedback (scale 0.98 on click)</li>
+        <li>Hero headline: character or word-by-word reveal on load</li>
+        <li>Form: success card slides in + checkmark animation</li>
+        <li>Timing: 300–500ms, custom cubic-bezier curves</li>
+        <li><em>Reduced motion:</em> crossfade only, no scale/translate</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card" data-choice="minimal" onclick="toggleSelect(this)">
+    <div class="card-body">
+      <h3>C · Minimal &amp; Fast</h3>
+      <p><strong>Hover only. No scroll effects.</strong></p>
+      <ul style="margin: 8px 0 0; padding-left: 20px; line-height: 1.7;">
+        <li>No entrance or scroll-triggered animations</li>
+        <li>Cards get a slightly different border color on hover</li>
+        <li>Buttons: same hover as today, snappier (100ms)</li>
+        <li>Focus rings: instantaneous, no transition</li>
+        <li>Timing: 100–150ms, linear</li>
+        <li><em>Reduced motion:</em> identical (no motion to disable)</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<p class="subtitle" style="margin-top: 24px;">Click a card to select. Tell me in the terminal what you picked — or if none feel right, describe what you'd want instead.</p>
