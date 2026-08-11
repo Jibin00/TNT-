@@ -62,7 +62,11 @@ body {
   font-size: 16px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
+  /* Must NOT be `overflow-x: hidden` — that makes the body a scroll container
+     on iOS Safari and silently disables `position: sticky` for every
+     descendant, which kills the pinned 360 scene. `clip` guards against stray
+     horizontal overflow without creating a scroll container. */
+  overflow-x: clip;
 }
 
 img, svg, video, canvas { max-width: 100%; display: block; }
@@ -435,12 +439,19 @@ ul, ol { margin: 0; padding: 0; }
 .scene__wrap { position: relative; height: 420vh; }
 .scene__stage {
   position: sticky; top: 0;
-  height: 100svh; min-height: 560px;
+  height: 100svh; min-height: 520px;
   display: grid; grid-template-columns: 1fr 1fr;
   align-items: center;
   gap: clamp(16px, 3vw, 48px);
   max-width: var(--max); margin: 0 auto; padding: 0 var(--s6);
   overflow: hidden;
+}
+
+/* Browsers without small-viewport units (iOS < 15.4, older Android WebViews)
+   would otherwise drop the stage height entirely and collapse the canvas. */
+@supports not (height: 100svh) {
+  .scene__stage { height: 100vh; }
+  .scene__visual { height: min(72vh, 620px); }
 }
 
 .scene__visual { position: relative; height: min(72svh, 620px); }

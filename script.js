@@ -15,6 +15,8 @@
   const lerp = (a, b, t) => a + (b - a) * t;
 
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const stickySupported = !!(window.CSS && CSS.supports &&
+    (CSS.supports('position', 'sticky') || CSS.supports('position', '-webkit-sticky')));
 
   /* ------------------------------------------------------------ validation */
 
@@ -522,7 +524,8 @@
 
     const count = items.length;
     let W = 0, H = 0, scale = 1;
-    let progress = 0, activeIndex = -1, ticking = false, visible = true;
+    let progress = 0, activeIndex = -1, visible = true;
+    let scrollRaf = 0, scheduledAt = 0;
     let staticMode = reducedMotion;
 
     // Optional photographic frame sequence
@@ -548,7 +551,7 @@
       canvas.height = Math.round(H * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       scale = Math.min(W * 1.78, H * 2.55) * 0.95;
-      staticMode = reducedMotion || window.innerHeight < 520;
+      staticMode = reducedMotion || !stickySupported || window.innerHeight < 520;
       section.classList.toggle('scene--static', staticMode);
       update(true);
     }
@@ -659,11 +662,29 @@
       draw();
     }
 
+    // rAF-throttled, but self-healing: a frame scheduled while the tab is
+    // backgrounded (or restored from bfcache) may never fire, and a plain
+    // boolean latch would leave the scene frozen for the rest of the session.
     function onScroll() {
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(() => { ticking = false; update(false); });
+      const now = performance.now();
+      if (scrollRaf) {
+        if (now - scheduledAt < 400) return;
+        cancelAnimationFrame(scrollRaf);
+        scrollRaf = 0;
+        update(false);
+        return;
+      }
+      scheduledAt = now;
+      scrollRaf = requestAnimationFrame(() => { scrollRaf = 0; update(false); });
     }
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState !== 'visible') return;
+      if (scrollRaf) { cancelAnimationFrame(scrollRaf); scrollRaf = 0; }
+      update(true);
+      if (!rafId && !staticMode && visible) loop();
+    });
+    window.addEventListener('pageshow', () => { scrollRaf = 0; update(true); });
 
     // Keep the scan sweep and hotspot pulse alive only while the scene is on
     // screen, and at a third of the frame rate — it is ambient motion, not
