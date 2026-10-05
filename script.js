@@ -106,89 +106,42 @@
   function initBookingFlow() {
     const form = $('#booking-form');
     if (!form) return;
-    const input = $('#booking-id');
+    const input = $('#booking-phone');
     const errEl = $('#booking-error');
-    const videoWrap = $('#video-wrap');
-    const video = $('#pdi-video');
-    const approvalForm = $('#approval-form');
+    const btn = $('#booking-submit');
 
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const result = validateBookingId(input.value);
+      const result = validatePhone(input.value);
       if (!result.ok) {
         setError(errEl, result.error);
         input.focus();
         return;
       }
       setError(errEl, null);
-      show(videoWrap);
-      show(approvalForm);
-      video.load();
-      video.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'center' });
+      btn.disabled = true;
+      btn.textContent = 'Please wait…';
+
+      const waUrl = 'https://wa.me/917827176189?text=' +
+        encodeURIComponent('Hi SouthSidePDI, I have already booked an inspection. My number is ' + result.value);
+
+      try {
+        await fetch('https://formsubmit.co/ajax/Southsidepdi@gmail.com', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({
+            _subject: 'Existing customer — PDI review request',
+            _template: 'table',
+            phone: result.value,
+            source: 'Already booked? Review your PDI',
+          }),
+        });
+      } catch (_) { /* still send the customer to WhatsApp */ }
+
+      window.location.href = waUrl;
     });
 
     input.addEventListener('input', () => setError(errEl, null));
-  }
-
-  function initApprovalForm() {
-    const form = $('#approval-form');
-    if (!form) return;
-
-    const errs = {
-      name: form.querySelector('[data-error-for="name"]'),
-      phone: form.querySelector('[data-error-for="phone"]'),
-      decision: form.querySelector('[data-error-for="decision"]'),
-    };
-
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const data = new FormData(form);
-      const name = validateName(data.get('name'));
-      const phone = validatePhone(data.get('phone'));
-      const decision = validateDecision(data.get('decision'));
-
-      setError(errs.name, name.ok ? null : name.error);
-      setError(errs.phone, phone.ok ? null : phone.error);
-      setError(errs.decision, decision.ok ? null : decision.error);
-
-      if (!name.ok) { $('#ap-name').focus(); return; }
-      if (!phone.ok) { $('#ap-phone').focus(); return; }
-      if (!decision.ok) { form.querySelector('input[name="decision"]').focus(); return; }
-
-      const record = {
-        bookingId: $('#booking-id').value.trim(),
-        name: name.value,
-        phone: phone.value,
-        decision: decision.value,
-        notes: (data.get('notes') ?? '').toString().trim(),
-        timestamp: new Date().toISOString(),
-        reference: generateReference(),
-      };
-
-      saveDecision(record);
-
-      $('#ref-code').textContent = record.reference;
-      show($('#success-card'));
-      hide($('#last-decision'));
-      $('#success-card').scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'center' });
-    });
-
-    ['name', 'phone'].forEach(field => {
-      form.querySelector(`#ap-${field}`)?.addEventListener('input', () => setError(errs[field], null));
-    });
-    $$('input[name="decision"]', form).forEach(r => {
-      r.addEventListener('change', () => setError(errs.decision, null));
-    });
-
-    $('#view-last')?.addEventListener('click', (e) => {
-      e.preventDefault();
-      const list = loadDecisions();
-      const last = list[list.length - 1];
-      const container = $('#last-decision');
-      container.innerHTML = last ? formatDecision(last) : '<p>No previous decisions found.</p>';
-      show(container);
-      container.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'center' });
-    });
   }
 
   /* ------------------------------------------------------------ chrome/UI */
@@ -723,7 +676,6 @@
     initReveals();
     initFaqAccordion();
     initBookingFlow();
-    initApprovalForm();
     initFloatingWhatsApp();
     initYear();
     initScene();

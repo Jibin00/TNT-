@@ -6,20 +6,22 @@
   <meta name="theme-color" content="#000000" />
   <title>SouthSidePDI — Pre-Purchase &amp; Pre-Delivery Car Inspections in Delhi NCR</title>
   <meta name="description" content="Independent pre-purchase and pre-delivery vehicle inspections, sourcing, negotiation support and nationwide delivery from Delhi NCR. We don't work for dealers or sellers — we work for you." />
-  <!-- TODO: replace example.com with the live domain once it is registered -->
-  <link rel="canonical" href="https://www.southsidepdi.com/" />
+  <!-- Currently the Vercel preview domain. Swap every tnt-fcmx.vercel.app URL below
+       (canonical, og:url, og:image, twitter:image, and the JSON-LD url/logo/image)
+       for the real domain once it is registered. -->
+  <link rel="canonical" href="https://tnt-fcmx.vercel.app/" />
 
   <meta property="og:type" content="website" />
   <meta property="og:title" content="SouthSidePDI — Your Eyes in Delhi. Your Trust Across India." />
   <meta property="og:description" content="Independent pre-purchase and pre-delivery vehicle inspections, sourcing, negotiation support and nationwide delivery from Delhi NCR." />
-  <meta property="og:url" content="https://www.southsidepdi.com/" />
-  <meta property="og:image" content="https://www.southsidepdi.com/assets/og-image.jpg" />
+  <meta property="og:url" content="https://tnt-fcmx.vercel.app/" />
+  <meta property="og:image" content="https://tnt-fcmx.vercel.app/assets/og-image.jpg" />
   <meta property="og:site_name" content="SouthSidePDI" />
 
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="SouthSidePDI — Your Eyes in Delhi. Your Trust Across India." />
   <meta name="twitter:description" content="Independent pre-purchase and pre-delivery vehicle inspections, sourcing, negotiation support and nationwide delivery from Delhi NCR." />
-  <meta name="twitter:image" content="https://www.southsidepdi.com/assets/og-image.jpg" />
+  <meta name="twitter:image" content="https://tnt-fcmx.vercel.app/assets/og-image.jpg" />
 
   <link rel="icon" href="assets/favicon.ico" sizes="any" />
   <link rel="icon" type="image/png" href="assets/icon-32.png" sizes="32x32" />
@@ -38,11 +40,11 @@
     "alternateName": "SouthSide PDI",
     "slogan": "Inspect. Verify. Buy. Deliver.",
     "description": "Independent automotive advisors offering pre-purchase inspections (PPI), pre-delivery inspections (PDI), vehicle sourcing, dealer verification, negotiation support and nationwide delivery coordination for buyers purchasing vehicles remotely from Delhi NCR.",
-    "url": "https://www.southsidepdi.com/",
-    "logo": "https://www.southsidepdi.com/assets/logo.png",
-    "image": "https://www.southsidepdi.com/assets/og-image.jpg",
+    "url": "https://tnt-fcmx.vercel.app/",
+    "logo": "https://tnt-fcmx.vercel.app/assets/logo.png",
+    "image": "https://tnt-fcmx.vercel.app/assets/og-image.jpg",
     "telephone": "+91-7827176189",
-    "email": "topnotchautomotiveindia@gmail.com",
+    "email": "Southsidepdi@gmail.com",
     "address": {
       "@type": "PostalAddress",
       "addressLocality": "Delhi NCR",
@@ -673,77 +675,25 @@
       <div class="container">
         <div class="section-head section-head--center">
           <p class="eyebrow reveal">Existing customers</p>
-          <h2 class="section-title reveal" style="--i:1">Review your PDI video</h2>
+          <h2 class="section-title reveal" style="--i:1">Review your PDI</h2>
           <p class="section-sub reveal" style="--i:2">
-            Enter your booking ID to watch the inspection walkaround and confirm the vehicle's condition
-            before it leaves for delivery.
+            Enter your phone number and we'll connect you with our team on WhatsApp to share
+            your inspection walkaround and confirm the vehicle's condition.
           </p>
         </div>
 
         <div class="review__panel reveal" style="--i:3">
           <form class="booking-form" id="booking-form" novalidate>
-            <label for="booking-id" class="booking-form__label">Booking ID</label>
+            <label for="booking-phone" class="booking-form__label">Your phone number</label>
             <div class="field" style="margin-bottom:0">
               <div class="booking-form__row">
-                <input type="text" id="booking-id" name="bookingId" maxlength="64"
-                       placeholder="e.g. SSPDI-2026-0042" autocomplete="off" required />
-                <button type="submit" class="btn">Watch video</button>
+                <input type="tel" id="booking-phone" name="phone" maxlength="20"
+                       placeholder="e.g. +91 98765 43210" autocomplete="tel" required />
+                <button type="submit" class="btn" id="booking-submit">Continue on WhatsApp</button>
               </div>
-              <p class="form-error" id="booking-error" hidden>Please enter a booking ID.</p>
+              <p class="form-error" id="booking-error" hidden>Please enter a valid phone number.</p>
             </div>
           </form>
-
-          <div class="video-wrap" id="video-wrap" hidden>
-            <video id="pdi-video" controls preload="metadata"
-                   src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4">
-              Your browser doesn't support embedded video.
-            </video>
-          </div>
-
-          <form class="approval-form" id="approval-form" hidden novalidate>
-            <h3 class="approval-form__title">Confirm the inspection</h3>
-
-            <div class="field">
-              <label for="ap-name">Your name</label>
-              <input type="text" id="ap-name" name="name" maxlength="100" required autocomplete="name" />
-              <p class="form-error" data-error-for="name" hidden></p>
-            </div>
-
-            <div class="field">
-              <label for="ap-phone">Phone</label>
-              <input type="tel" id="ap-phone" name="phone" required autocomplete="tel" />
-              <p class="form-error" data-error-for="phone" hidden></p>
-            </div>
-
-            <fieldset class="field field--radio">
-              <legend>Decision</legend>
-              <div class="radios">
-                <label><input type="radio" name="decision" value="approve" required /> Approve</label>
-                <label><input type="radio" name="decision" value="callback" /> Request callback</label>
-                <label><input type="radio" name="decision" value="reject" /> Reject</label>
-              </div>
-              <p class="form-error" data-error-for="decision" hidden></p>
-            </fieldset>
-
-            <div class="field">
-              <label for="ap-notes">Notes (optional)</label>
-              <textarea id="ap-notes" name="notes" maxlength="1000" rows="3"></textarea>
-            </div>
-
-            <button type="submit" class="btn btn--block">Submit decision</button>
-            <p class="approval-form__viewback">
-              <a href="#" id="view-last">View my last decision</a>
-            </p>
-          </form>
-
-          <div class="success-card" id="success-card" hidden>
-            <h3>Decision recorded</h3>
-            <p>Reference: <code id="ref-code"></code></p>
-            <p class="success-card__sub">Your decision is saved in this browser for now. Our team will
-              confirm it with you directly on the number you provided.</p>
-          </div>
-
-          <div class="last-decision" id="last-decision" hidden></div>
         </div>
       </div>
     </section>
@@ -918,7 +868,7 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
               <span>
                 <span class="cta__label">Email</span>
-                <a href="mailto:topnotchautomotiveindia@gmail.com">topnotchautomotiveindia@gmail.com</a>
+                <a href="mailto:Southsidepdi@gmail.com">Southsidepdi@gmail.com</a>
               </span>
             </div>
             <div class="cta__line">
